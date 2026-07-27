@@ -1,6 +1,6 @@
-const db = require('../models');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const db = require("../models");
+const bcrypt = require("bcrypt"); // Ganti dengan "bcryptjs" jika sebelumnya Anda menginstal bcryptjs
+const jwt = require("jsonwebtoken");
 
 const User = db.User;
 
@@ -10,7 +10,7 @@ async function register(req, res) {
 
         if (!email || !password) {
             return res.status(400).json({ 
-                message: 'Email and password wajib di isi' 
+                message: "Email and password wajib di isi" 
             });
         }
 
@@ -20,22 +20,23 @@ async function register(req, res) {
 
         if (existingUser) {
             return res.status(400).json({ 
-                message: 'Email sudah terdaftar' 
+                message: "Email sudah terdaftar" 
             });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const User = await User.create({
+        // Perbaikan: Menggunakan variabel newUser agar tidak bentrok dengan model User
+        const newUser = await User.create({
             email,
             password: hashedPassword
         });
 
         res.status(201).json({
-            message: 'Registrasi berhasil',
+            message: "Registrasi berhasil",
             user: {
-                id: User.id,
-                email: User.email
+                id: newUser.id,
+                email: newUser.email
             }
         });
     } catch (error) {
@@ -51,7 +52,7 @@ async function login(req, res) {
 
         if (!email || !password) {
             return res.status(400).json({ 
-                message: 'Email dan password wajib di isi' 
+                message: "Email dan password wajib di isi"
             });
         }
 
@@ -61,7 +62,7 @@ async function login(req, res) {
 
         if (!user) {
             return res.status(400).json({ 
-                message: 'Email atau password salah' 
+                message: "Email atau password salah" 
             });
         }
 
@@ -69,18 +70,18 @@ async function login(req, res) {
 
         if (!isMatch) {
             return res.status(400).json({ 
-                message: 'Email atau password salah' 
+                message: "Email atau password salah" 
             });
         }
 
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            'secretkey',
-            { expiresIn: '1h' }
+            "secretkey",
+            { expiresIn: "1h" }
         );
 
         res.status(200).json({
-            message: 'Login berhasil',
+            message: "Login berhasil",
             token
         });
     } catch (error) {
