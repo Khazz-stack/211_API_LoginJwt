@@ -1,5 +1,5 @@
 {
-  "name": "211_api_loginjwt",
+  "name": "clear",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -7,7 +7,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev" : "nodemon index.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
